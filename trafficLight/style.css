@@ -3,6 +3,7 @@ body {
   display: flex;
   justify-content: center;
   align-items: center;
+  gap: 10px;
 }
 
 .traffic-light {
@@ -33,4 +34,14 @@ body {
 }
 .green {
   background-color: rgb(11, 170, 11);
+}
+.people {
+  height: 200px;
+}
+.state {
+  font-size: 21px;
+  display: flex;
+  flex-direction: column;
+}
+.state-column {
 }
