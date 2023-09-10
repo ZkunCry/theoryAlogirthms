@@ -3,20 +3,19 @@ const iterationButton = document.querySelector("#iteration");
 const modeButton = document.querySelector("#mode");
 const titleColumn = document.querySelector(".title__column");
 const nextState = document.querySelector("#nextState");
-let buffer;
-turingInput.addEventListener("keyup", (event) => {
-  const operation = modeButton.dataset.type === "sum" ? "+" : "*";
-  const result = [...event.target.value]
-    .filter(
-      (value) =>
-        value === "1" || value === "0" || value === operation || value === "="
-    )
-    .join("");
 
-  event.target.value = result;
-  buffer = event.target.value;
-});
+let buffer = turingInput.value;
 
+function changeStates(object) {
+  titleColumn.children[0].innerText = `Current State: ${
+    object.currentState ?? " "
+  }`;
+  titleColumn.children[1].innerText = `Current value: ${
+    object.currentSymbol ?? " "
+  }`;
+  nextState.children[0].innerText = `Next State: ${object.nextstate ?? " "}`;
+  nextState.children[1].innerText = `Next Value: ${object.newSymbol ?? " "}`;
+}
 class TuringMachine {
   constructor(
     states,
@@ -47,15 +46,17 @@ class TuringMachine {
       const transition = this.transitions.find(
         (t) => t.state === this.currentState && t.symbol === currentSymbol
       );
-      titleColumn.children[0].innerText = `Current State: ${this.currentState}`;
-      titleColumn.children[1].innerText = `Current value: ${currentSymbol}`;
+      let changeStateObject = {
+        currentState: this.currentState,
+        currentSymbol: currentSymbol,
+      };
       // Если переход найден, изменяем состояние, символ и позицию головки
       if (transition) {
         this.currentState = transition.newState;
         this.tape[this.headPosition] = transition.newSymbol;
-        nextState.children[0].innerText = `Next State: ${this.currentState}`;
-        nextState.children[1].innerText = `Next Value: ${transition.newSymbol}`;
-
+        changeStateObject.nextstate = this.currentState;
+        changeStateObject.newSymbol = transition.newSymbol;
+        changeStates(changeStateObject);
         if (transition.move === "L") {
           this.headPosition--;
         } else if (transition.move === "R") {
@@ -64,7 +65,6 @@ class TuringMachine {
           this.tape = [...this.tape].filter(
             (value) => value !== "+" && value !== "="
           );
-          return this.tape.join("");
         }
       } else {
         // Если переход не найден, машина останавливается
@@ -141,19 +141,41 @@ tempTm.start = tm.start;
 iterationButton.addEventListener("click", () => {
   turingInput.value = tm.start(turingInput.value);
 });
+
 modeButton.addEventListener("click", (event) => {
+  changeStates({});
+  tm.currentState = "q0";
+
   let { type } = event.target.dataset;
   if (type === "sum") {
     event.target.dataset.type = "mul";
     event.target.innerText = "Multiplication mode";
     Object.assign(tm, tempTm);
     tm.transitions = transitionsMulti;
+    tm.states.push("q4");
   } else if (type === "mul") {
     event.target.dataset.type = "sum";
     event.target.innerText = "Summation mode";
     Object.assign(tm, tempTm);
     tm.transitions = transitionsSum;
+    tm.states.pop();
   }
   turingInput.value =
     type === "sum" ? buffer.replace("+", "*") : buffer.replace("*", "+");
+  tm.headPosition = turingInput.value.indexOf("1");
+});
+
+turingInput.addEventListener("keyup", (event) => {
+  changeStates({});
+  tm.currentState = "q0";
+  const operation = modeButton.dataset.type === "sum" ? "+" : "*";
+  const result = [...event.target.value]
+    .filter(
+      (value) =>
+        value === "1" || value === "0" || value === operation || value === "="
+    )
+    .join("");
+  result.includes("1") ? (tm.headPosition = result.indexOf("1")) : 0;
+  event.target.value = result;
+  buffer = event.target.value;
 });
