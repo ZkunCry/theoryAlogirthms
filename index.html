@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="./style.css" />
+    <link rel="stylesheet" href="./null.css" />
+  </head>
+  <body>
+    <div class="wrapper">
+      <div class="turing-machine">
+        <div class="turing-machine__inner">
+          <div class="turing-machine__title">
+            <div class="title__column">
+              <span>Current State</span>
+              <span>Current value</span>
+            </div>
+            <div class="title__column" id="nextState">
+              <span>Next State</span>
+              <span>Next value</span>
+            </div>
+          </div>
+          <div class="turing-machine__body">
+            <div class="body__input">
+              <input
+                type="text"
+                data-type="turing-input"
+                class="machine-input"
+                value="00000000000000000000000000000000000000000000000000000000000000"
+              />
+            </div>
+            <div class="body-buttons">
+              <button data-type="iter" id="iteration">Next</button>
+              <button data-type="sum" id="mode">Summation mode</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <script src="./script.js"></script>
+  </body>
+</html>

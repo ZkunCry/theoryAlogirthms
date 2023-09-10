@@ -1,0 +1,67 @@
+*,
+::after,
+::before {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+body {
+  display: flex;
+  margin: 0 auto;
+  justify-content: center;
+  align-items: center;
+  font-size: 16px;
+  font-family: Arial, Helvetica, sans-serif;
+  height: 100vh;
+  width: 100%;
+}
+.wrapper {
+  max-width: 970px;
+  width: 100%;
+}
+.turing-machine {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+}
+.turing-machine__inner {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+.turing-machine__title {
+  display: flex;
+  flex-direction: row;
+}
+.title__column {
+  flex: 1 1 auto;
+}
+.title__column span {
+  display: block;
+}
+.machine-input {
+  font-size: 21px;
+  width: 100%;
+  border: 1px solid blueviolet;
+  padding: 0.5rem 10px;
+}
+.turing-machine__body {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+.body-buttons {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.body-buttons button {
+  font-size: 1rem;
+  background-color: blueviolet;
+  color: #fff;
+  border-radius: 20px;
+  padding: 0.5rem 1.2rem;
+}
