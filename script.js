@@ -3,6 +3,7 @@ const iterationButton = document.querySelector("#iteration");
 const modeButton = document.querySelector("#mode");
 const titleColumn = document.querySelector(".title__column");
 const nextState = document.querySelector("#nextState");
+const spanElement = document.querySelector('#spanInput')
 
 let buffer = turingInput.value;
 
@@ -62,16 +63,19 @@ class TuringMachine {
         } else if (transition.move === "R") {
           this.headPosition++;
         } else if (transition.move === "S") {
+          console.log('s');
           this.tape = [...this.tape].filter(
             (value) => value !== "+" && value !== "="
           );
         }
+       
       } else {
         // Если переход не найден, машина останавливается
         return this.tape.join("");
       }
     }
     // Возвращаем результат
+    changeColor()
     return this.tape.join("");
   }
 }
@@ -164,7 +168,15 @@ modeButton.addEventListener("click", (event) => {
     type === "sum" ? buffer.replace("+", "*") : buffer.replace("*", "+");
   tm.headPosition = turingInput.value.indexOf("1");
 });
-
+const changeColor = ()=>{
+  const span = document.createElement('span')
+  let position = tm.headPosition
+  span.style.color = 'red'
+  span.innerText = turingInput.value[position]
+  spanElement.innerHTML = turingInput.value.substring(0,position) + 
+  turingInput.value[position].fontcolor('#aaa') +
+   turingInput.value.substring(position+1) 
+}
 turingInput.addEventListener("keyup", (event) => {
   changeStates({});
   tm.currentState = "q0";
@@ -178,4 +190,6 @@ turingInput.addEventListener("keyup", (event) => {
   result.includes("1") ? (tm.headPosition = result.indexOf("1")) : 0;
   event.target.value = result;
   buffer = event.target.value;
+  changeColor()
 });
+
