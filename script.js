@@ -42,6 +42,33 @@ class TuringMachine {
     // Записываем входные символы на ленту
     this.tape = input.split("");
     // Запускаем машину
+    if(this.finalStates.includes(this.currentState))
+      {
+        if(this.tape.includes('+'))
+        this.tape = [...this.tape].filter(
+          (value) => value !== "+" && value !== "=" && value !='*'
+        );
+
+        else if(this.tape.includes('*'))
+        {
+          const indexAssign = this.tape.indexOf('=')
+          const subSliceStr = this.tape.slice(indexAssign+1)
+          let beforeSubsliceStr = this.tape.slice(0,indexAssign+1)
+          const size = beforeSubsliceStr.length
+   
+
+          beforeSubsliceStr = beforeSubsliceStr.filter((value)=> value!=='=' && value!=='*' && value !=='1')
+          this.tape = Array.prototype.concat(beforeSubsliceStr,subSliceStr)
+          
+        }
+        // this.tape.push('0')
+        // this.tape.push('0')
+        changeColor()
+        this.currentState = 'q5'
+        return this.tape.join('')
+      }
+    changeColor()
+
     if (!this.finalStates.includes(this.currentState)) {
       const currentSymbol = this.tape[this.headPosition];
       const transition = this.transitions.find(
@@ -53,11 +80,12 @@ class TuringMachine {
       };
       // Если переход найден, изменяем состояние, символ и позицию головки
       if (transition) {
-        this.currentState = transition.newState;
-        this.tape[this.headPosition] = transition.newSymbol;
         changeStateObject.nextstate = this.currentState;
         changeStateObject.newSymbol = transition.newSymbol;
         changeStates(changeStateObject);
+        this.currentState = transition.newState;
+        this.tape[this.headPosition] = transition.newSymbol;
+      
         if (transition.move === "L") {
           this.headPosition--;
         } else if (transition.move === "R") {
@@ -75,7 +103,7 @@ class TuringMachine {
       }
     }
     // Возвращаем результат
-    changeColor()
+
     return this.tape.join("");
   }
 }
@@ -144,6 +172,7 @@ const tempTm = structuredClone(tm);
 tempTm.start = tm.start;
 iterationButton.addEventListener("click", () => {
   turingInput.value = tm.start(turingInput.value);
+  changeColor()
 });
 
 modeButton.addEventListener("click", (event) => {
@@ -157,21 +186,23 @@ modeButton.addEventListener("click", (event) => {
     Object.assign(tm, tempTm);
     tm.transitions = transitionsMulti;
     tm.states.push("q4");
+    tm.finalStates[0] = 'q4'
   } else if (type === "mul") {
     event.target.dataset.type = "sum";
     event.target.innerText = "Summation mode";
     Object.assign(tm, tempTm);
     tm.transitions = transitionsSum;
     tm.states.pop();
+    tm.finalStates[0] = 'q3'
   }
   turingInput.value =
     type === "sum" ? buffer.replace("+", "*") : buffer.replace("*", "+");
   tm.headPosition = turingInput.value.indexOf("1");
+  changeColor()
 });
 const changeColor = ()=>{
   const span = document.createElement('span')
   let position = tm.headPosition
-  span.style.color = 'red'
   span.innerText = turingInput.value[position]
   spanElement.innerHTML = turingInput.value.substring(0,position) + 
   turingInput.value[position].fontcolor('#aaa') +
