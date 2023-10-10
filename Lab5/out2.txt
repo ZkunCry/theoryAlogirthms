@@ -1,0 +1,3 @@
+n = g + y;
+p = n - sin(x);
+t = n / p;

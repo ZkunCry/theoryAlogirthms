@@ -1,0 +1,6 @@
+b = j+l;
+aa = b + c;
+n = g + y;
+p = n - sin(x);
+d = k * cos(x);
+t = n / p;
