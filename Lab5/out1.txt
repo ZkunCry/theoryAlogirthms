@@ -1,4 +1,0 @@
-aa = b + c;
-aa = b + c;
-aa = b + c;
-aa = b + c;

@@ -1,6 +1,9 @@
-b = j+l;
-aa = b + c;
-n = g + y;
-p = n - sin(x);
-d = k * cos(x);
-t = n / p;
+f = 10;
+d = 10;
+a = 14;
+b = a + c;
+if a >b:
+sum = a + b;
+sub = f - d;
+y = 10;
+print(sum)	
